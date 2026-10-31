@@ -1,0 +1,12 @@
+{
+	"home": {
+		"title": "WinWinTravel frontend test task",
+		"openFilters": "Open filters"
+	},
+	"popup": {
+		"filters": "Filter",
+		"close": "Close popup",
+		"apply": "Apply",
+		"clear": "Clear all parameters"
+	}
+}

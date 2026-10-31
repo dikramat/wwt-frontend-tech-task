@@ -1,0 +1,22 @@
+import { type PropsWithChildren, useId } from 'react'
+
+import { PopupContext } from './PopupContext'
+
+export const Popup = ({ children }: PropsWithChildren) => {
+	const titleId = useId()
+
+	return (
+		<div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
+			<PopupContext.Provider value={titleId}>
+				<section
+					aria-labelledby={titleId}
+					aria-modal="true"
+					className="flex max-h-full min-h-0 w-full max-w-7xl flex-col overflow-hidden rounded-2xl bg-white"
+					role="dialog"
+				>
+					{children}
+				</section>
+			</PopupContext.Provider>
+		</div>
+	)
+}

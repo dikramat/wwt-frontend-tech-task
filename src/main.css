@@ -1,2 +1,9 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
+
+@theme {
+	--font-inter: 'Inter', sans-serif;
+	--color-black-grey-200: #B4B4B4;
+	--color-black-grey-500: #31393C;
+	--color-buttons-brand-200: #FF5F00;
+}
