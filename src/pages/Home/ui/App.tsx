@@ -1,34 +1,19 @@
-import { useState } from 'react'
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'node_modules/react-i18next'
 
-import type { FilterItem } from '@/shared/api/types/Filter'
-import filterData from '@/shared/temp/filterData.json'
+import { FilterSettings } from '@/features/FilterSettings'
 import { Button } from '@/shared/ui/components/Button'
 
-import { FilterSettings } from './FilterSettings'
+import { useHomePage } from './useHomePage'
 
 export const App = () => {
 	const { t } = useTranslation('common')
-	const [isFilterSettingOpen, setIsFilterSettingOpen] = useState(false)
-	const [selectedOptions, setSelectedOptions] = useState<
-		Record<string, string[]>
-	>({})
-	const filterItems = filterData.filterItems as FilterItem[]
 
-	const toggleOption = (
-		filterId: string,
-		optionId: string,
-		checked: boolean
-	) => {
-		setSelectedOptions(current => {
-			const currentIds = current[filterId] ?? []
-			const nextIds = checked
-				? [...new Set([...currentIds, optionId])]
-				: currentIds.filter(id => id !== optionId)
-
-			return { ...current, [filterId]: nextIds }
-		})
-	}
+	const {
+		filterItems,
+		isFilterSettingsOpen,
+		openFilterSettings,
+		closeFilterSettings
+	} = useHomePage()
 
 	return (
 		<main className="flex min-h-dvh flex-col items-center justify-center gap-6 p-4">
@@ -37,21 +22,14 @@ export const App = () => {
 			</h1>
 			<Button
 				className="min-h-0 w-auto px-6 py-3"
-				onClick={() => setIsFilterSettingOpen(true)}
+				onClick={openFilterSettings}
 			>
 				{t('home.openFilters')}
 			</Button>
-			{isFilterSettingOpen && (
+			{isFilterSettingsOpen && (
 				<FilterSettings
-					applyLabel={t('popup.apply')}
-					closeLabel={t('popup.close')}
-					clearLabel={t('popup.clear')}
 					filterItems={filterItems}
-					onClear={() => setSelectedOptions({})}
-					onClose={() => setIsFilterSettingOpen(false)}
-					onOptionToggle={toggleOption}
-					selectedOptions={selectedOptions}
-					title={t('popup.filters')}
+					onClose={closeFilterSettings}
 				/>
 			)}
 		</main>

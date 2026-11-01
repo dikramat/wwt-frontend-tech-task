@@ -1,0 +1,4 @@
+export const SECOND_IN_MS = 1000
+export const MINUTE_IN_MS = 60 * SECOND_IN_MS
+export const THIRTY_SECONDS_IN_MS = 30 * SECOND_IN_MS
+export const THIRTY_MINUTES_IN_MS = 30 * MINUTE_IN_MS
