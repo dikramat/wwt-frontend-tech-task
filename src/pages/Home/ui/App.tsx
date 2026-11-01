@@ -1,4 +1,4 @@
-import { useTranslation } from 'node_modules/react-i18next'
+import { useTranslation } from 'react-i18next'
 
 import { FilterSettings } from '@/features/FilterSettings'
 import { Button } from '@/shared/ui/components/Button'
@@ -10,6 +10,7 @@ export const App = () => {
 
 	const {
 		filterItems,
+		appliedFilters,
 		isFilterSettingsOpen,
 		openFilterSettings,
 		closeFilterSettings
@@ -26,6 +27,13 @@ export const App = () => {
 			>
 				{t('home.openFilters')}
 			</Button>
+			{appliedFilters.length > 0 && (
+				<article>
+					<pre className="max-w-full overflow-x-auto">
+						{JSON.stringify(appliedFilters, null, 2)}
+					</pre>
+				</article>
+			)}
 			{isFilterSettingsOpen && (
 				<FilterSettings
 					filterItems={filterItems}

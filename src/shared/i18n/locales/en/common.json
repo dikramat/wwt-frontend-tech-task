@@ -7,6 +7,11 @@
 		"filters": "Filter",
 		"close": "Close popup",
 		"apply": "Apply",
-		"clear": "Clear all parameters"
+		"clear": "Clear all parameters",
+		"confirmation": {
+			"title": "Do you want to apply new filter",
+			"useOldFilter": "Use old filter",
+			"applyNewFilter": "Apply new filter"
+		}
 	}
 }

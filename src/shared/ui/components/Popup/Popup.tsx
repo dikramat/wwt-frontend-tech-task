@@ -1,8 +1,14 @@
 import { type PropsWithChildren, useId } from 'react'
 
+import { twMerge } from 'tailwind-merge'
+
 import { PopupContext } from './PopupContext'
 
-export const Popup = ({ children }: PropsWithChildren) => {
+type PopupProps = PropsWithChildren<{
+	className?: string
+}>
+
+export const Popup = ({ children, className }: PopupProps) => {
 	const titleId = useId()
 
 	return (
@@ -11,7 +17,10 @@ export const Popup = ({ children }: PropsWithChildren) => {
 				<section
 					aria-labelledby={titleId}
 					aria-modal="true"
-					className="flex max-h-full min-h-0 w-full max-w-7xl flex-col overflow-hidden rounded-2xl bg-white"
+					className={twMerge(
+						'flex max-h-full min-h-0 w-full max-w-7xl flex-col overflow-hidden rounded-2xl bg-white',
+						className
+					)}
 					role="dialog"
 				>
 					{children}
