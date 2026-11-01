@@ -28,6 +28,12 @@ jobs:
       - name: Run build
         run: npm run build
 
+      - name: Run tests
+        run: pnpm exec vitest run
+
+      - name: Run test coverage
+        run: pnpm coverage
+
       - name: Run format
         run: npm run format:check:all
 
