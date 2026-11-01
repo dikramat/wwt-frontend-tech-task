@@ -9,7 +9,8 @@ import { LinkLikeButton } from './LinkLikeButton'
 const labels = {
 	openFilters: 'Open filters',
 	submit: 'Submit',
-	clearParameters: 'Clear all parameters'
+	clearParameters: 'Clear all parameters',
+	closePopup: 'Close popup'
 } as const
 
 describe('button components', () => {
@@ -43,13 +44,13 @@ describe('button components', () => {
 		const onClick = vi.fn()
 		render(
 			<IconButton
-				aria-label="Close popup"
+				aria-label={labels.closePopup}
 				icon={<span aria-hidden="true">×</span>}
 				onClick={onClick}
 			/>
 		)
 
-		fireEvent.click(screen.getByRole('button', { name: 'Close popup' }))
+		fireEvent.click(screen.getByRole('button', { name: labels.closePopup }))
 
 		expect(onClick).toHaveBeenCalledOnce()
 	})

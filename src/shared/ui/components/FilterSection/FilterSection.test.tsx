@@ -3,9 +3,16 @@ import { describe, expect, it, vi } from 'vitest'
 
 import { FilterSection } from './FilterSection'
 
+const labels = {
+	mealOptions: 'Meal options',
+	facilities: 'Facilities',
+	pool: 'Pool',
+	breakfast: 'Breakfast included'
+} as const
+
 const options = [
-	{ id: 'breakfast', name: 'Breakfast included' },
-	{ id: 'pool', name: 'Pool' }
+	{ id: 'breakfast', name: labels.breakfast },
+	{ id: 'pool', name: labels.pool }
 ]
 
 describe('FilterSection', () => {
@@ -15,16 +22,16 @@ describe('FilterSection', () => {
 				onOptionToggle={vi.fn()}
 				options={options}
 				selectedOptionIds={['pool']}
-				title="Meal options"
+				title={labels.mealOptions}
 			/>
 		)
 
 		expect(
-			screen.getByRole('heading', { name: 'Meal options' })
+			screen.getByRole('heading', { name: labels.mealOptions })
 		).toBeInTheDocument()
-		expect(screen.getByRole('checkbox', { name: 'Pool' })).toBeChecked()
+		expect(screen.getByRole('checkbox', { name: labels.pool })).toBeChecked()
 		expect(
-			screen.getByRole('checkbox', { name: 'Breakfast included' })
+			screen.getByRole('checkbox', { name: labels.breakfast })
 		).not.toBeChecked()
 	})
 
@@ -35,11 +42,11 @@ describe('FilterSection', () => {
 				onOptionToggle={onOptionToggle}
 				options={options}
 				selectedOptionIds={[]}
-				title="Facilities"
+				title={labels.facilities}
 			/>
 		)
 
-		fireEvent.click(screen.getByRole('checkbox', { name: 'Pool' }))
+		fireEvent.click(screen.getByRole('checkbox', { name: labels.pool }))
 
 		expect(onOptionToggle).toHaveBeenCalledWith('pool', true)
 	})

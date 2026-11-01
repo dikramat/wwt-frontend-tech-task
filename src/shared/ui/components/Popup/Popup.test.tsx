@@ -6,7 +6,11 @@ import { Popup, PopupBody, PopupFooter, PopupHeader } from './index'
 const labels = {
 	filterContent: 'Filter content',
 	applyAction: 'Apply action',
-	bodyContent: 'Body'
+	bodyContent: 'Body',
+	closePopup: 'Close popup',
+	filterTitle: 'Filter',
+	confirmationTitle: 'Confirmation',
+	standaloneTitle: 'Standalone title'
 } as const
 
 describe('Popup components', () => {
@@ -15,16 +19,16 @@ describe('Popup components', () => {
 		render(
 			<Popup>
 				<PopupHeader
-					closeLabel="Close popup"
+					closeLabel={labels.closePopup}
 					onClose={onClose}
-					title="Filter"
+					title={labels.filterTitle}
 				/>
 				<PopupBody>{labels.filterContent}</PopupBody>
 				<PopupFooter>{labels.applyAction}</PopupFooter>
 			</Popup>
 		)
 
-		const dialog = screen.getByRole('dialog', { name: 'Filter' })
+		const dialog = screen.getByRole('dialog', { name: labels.filterTitle })
 		expect(dialog).toHaveAttribute('aria-modal', 'true')
 		expect(screen.getByText(labels.filterContent)).toBeInTheDocument()
 		expect(
@@ -32,7 +36,7 @@ describe('Popup components', () => {
 		).toBeInTheDocument()
 		expect(screen.getByRole('separator')).toBeInTheDocument()
 
-		fireEvent.click(screen.getByRole('button', { name: 'Close popup' }))
+		fireEvent.click(screen.getByRole('button', { name: labels.closePopup }))
 		expect(onClose).toHaveBeenCalledOnce()
 	})
 
@@ -40,17 +44,17 @@ describe('Popup components', () => {
 		render(
 			<Popup>
 				<PopupHeader
-					closeLabel="Close popup"
+					closeLabel={labels.closePopup}
 					onClose={vi.fn()}
 					showDivider={false}
-					title="Confirmation"
+					title={labels.confirmationTitle}
 				/>
 				<PopupBody className="px-2">{labels.bodyContent}</PopupBody>
 			</Popup>
 		)
 
 		expect(
-			screen.getByRole('dialog', { name: 'Confirmation' })
+			screen.getByRole('dialog', { name: labels.confirmationTitle })
 		).toBeInTheDocument()
 		expect(screen.queryByRole('separator')).not.toBeInTheDocument()
 		expect(screen.getByText(labels.bodyContent)).toHaveClass('px-2')
@@ -59,15 +63,15 @@ describe('Popup components', () => {
 	it('renders a header without a popup context', () => {
 		render(
 			<PopupHeader
-				closeLabel="Close popup"
+				closeLabel={labels.closePopup}
 				onClose={vi.fn()}
 				showDivider={false}
-				title="Standalone title"
+				title={labels.standaloneTitle}
 			/>
 		)
 
 		expect(
-			screen.getByRole('heading', { name: 'Standalone title' })
+			screen.getByRole('heading', { name: labels.standaloneTitle })
 		).not.toHaveAttribute('id')
 	})
 })

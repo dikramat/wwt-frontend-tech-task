@@ -7,14 +7,27 @@ import { renderWithProviders } from '@/test/renderWithProviders'
 
 import { FilterSettings } from './FilterSettings'
 
+const labels = {
+	filterTitle: 'Filter',
+	facilities: 'Facilities',
+	apply: 'Apply',
+	clearParameters: 'Clear all parameters',
+	pool: 'Pool',
+	parking: 'Parking',
+	closePopup: 'Close popup',
+	confirmationTitle: 'Do you want to apply new filter',
+	useOldFilter: 'Use old filter',
+	applyNewFilter: 'Apply new filter'
+} as const
+
 const filterItems: FilterItem[] = [
 	{
 		id: 'FACILITIES',
-		name: 'Facilities',
+		name: labels.facilities,
 		type: FilterType.OPTION,
 		options: [
-			{ id: 'pool', name: 'Pool' },
-			{ id: 'parking', name: 'Parking' }
+			{ id: 'pool', name: labels.pool },
+			{ id: 'parking', name: labels.parking }
 		]
 	}
 ]
@@ -32,12 +45,14 @@ describe('FilterSettings', () => {
 			/>
 		)
 
-		expect(screen.getByRole('dialog', { name: 'Filter' })).toBeInTheDocument()
+		expect(
+			screen.getByRole('dialog', { name: labels.filterTitle })
+		).toBeInTheDocument()
 		expect(document.querySelector('[aria-busy="true"]')).toBeInTheDocument()
 		expect(screen.queryAllByRole('checkbox')).toHaveLength(0)
-		expect(screen.getByRole('button', { name: 'Apply' })).toBeDisabled()
+		expect(screen.getByRole('button', { name: labels.apply })).toBeDisabled()
 		expect(
-			screen.getByRole('button', { name: 'Clear all parameters' })
+			screen.getByRole('button', { name: labels.clearParameters })
 		).toBeDisabled()
 	})
 
@@ -54,14 +69,16 @@ describe('FilterSettings', () => {
 			/>
 		)
 
-		expect(screen.getByRole('checkbox', { name: 'Pool' })).toBeChecked()
+		expect(screen.getByRole('checkbox', { name: labels.pool })).toBeChecked()
 		fireEvent.click(
-			screen.getByRole('button', { name: 'Clear all parameters' })
+			screen.getByRole('button', { name: labels.clearParameters })
 		)
 
-		expect(screen.getByRole('checkbox', { name: 'Pool' })).not.toBeChecked()
+		expect(
+			screen.getByRole('checkbox', { name: labels.pool })
+		).not.toBeChecked()
 		expect(useFilterStore.getState().appliedFilters).toEqual(appliedFilters)
-		fireEvent.click(screen.getByRole('button', { name: 'Close popup' }))
+		fireEvent.click(screen.getByRole('button', { name: labels.closePopup }))
 		expect(onClose).toHaveBeenCalledOnce()
 		expect(useFilterStore.getState().appliedFilters).toEqual(appliedFilters)
 	})
@@ -79,23 +96,23 @@ describe('FilterSettings', () => {
 			/>
 		)
 
-		fireEvent.click(screen.getByRole('checkbox', { name: 'Parking' }))
+		fireEvent.click(screen.getByRole('checkbox', { name: labels.parking }))
 		expect(useFilterStore.getState().appliedFilters).toEqual(appliedFilters)
-		fireEvent.click(screen.getByRole('button', { name: 'Apply' }))
+		fireEvent.click(screen.getByRole('button', { name: labels.apply }))
 
 		const confirmation = screen.getByRole('dialog', {
-			name: 'Do you want to apply new filter'
+			name: labels.confirmationTitle
 		})
 		expect(confirmation).toBeInTheDocument()
-		fireEvent.click(screen.getByRole('button', { name: 'Use old filter' }))
+		fireEvent.click(screen.getByRole('button', { name: labels.useOldFilter }))
 		expect(
-			screen.queryByRole('dialog', { name: 'Do you want to apply new filter' })
+			screen.queryByRole('dialog', { name: labels.confirmationTitle })
 		).not.toBeInTheDocument()
 		expect(useFilterStore.getState().appliedFilters).toEqual(appliedFilters)
 		expect(onClose).not.toHaveBeenCalled()
 
-		fireEvent.click(screen.getByRole('button', { name: 'Apply' }))
-		fireEvent.click(screen.getByRole('button', { name: 'Apply new filter' }))
+		fireEvent.click(screen.getByRole('button', { name: labels.apply }))
+		fireEvent.click(screen.getByRole('button', { name: labels.applyNewFilter }))
 
 		await waitFor(() =>
 			expect(useFilterStore.getState().appliedFilters).toEqual([
@@ -122,11 +139,11 @@ describe('FilterSettings', () => {
 		)
 
 		fireEvent.click(
-			screen.getByRole('button', { name: 'Clear all parameters' })
+			screen.getByRole('button', { name: labels.clearParameters })
 		)
-		fireEvent.click(screen.getByRole('button', { name: 'Apply' }))
+		fireEvent.click(screen.getByRole('button', { name: labels.apply }))
 		expect(useFilterStore.getState().appliedFilters).toEqual(appliedFilters)
-		fireEvent.click(screen.getByRole('button', { name: 'Apply new filter' }))
+		fireEvent.click(screen.getByRole('button', { name: labels.applyNewFilter }))
 
 		expect(useFilterStore.getState().appliedFilters).toEqual([])
 	})
@@ -144,9 +161,9 @@ describe('FilterSettings', () => {
 			/>
 		)
 
-		fireEvent.click(screen.getByRole('checkbox', { name: 'Pool' }))
-		fireEvent.click(screen.getByRole('button', { name: 'Apply' }))
-		fireEvent.click(screen.getByRole('button', { name: 'Apply new filter' }))
+		fireEvent.click(screen.getByRole('checkbox', { name: labels.pool }))
+		fireEvent.click(screen.getByRole('button', { name: labels.apply }))
+		fireEvent.click(screen.getByRole('button', { name: labels.applyNewFilter }))
 
 		expect(useFilterStore.getState().appliedFilters).toEqual([])
 	})

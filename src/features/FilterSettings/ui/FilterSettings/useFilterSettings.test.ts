@@ -6,11 +6,16 @@ import { useFilterStore } from '@/shared/store/useFilterStore'
 
 import { useFilterSettings } from './useFilterSettings'
 
+const labels = {
+	facilities: 'Facilities',
+	pool: 'Pool'
+} as const
+
 const filter: FilterItem = {
 	id: 'FACILITIES',
-	name: 'Facilities',
+	name: labels.facilities,
 	type: FilterType.OPTION,
-	options: [{ id: 'pool', name: 'Pool' }]
+	options: [{ id: 'pool', name: labels.pool }]
 }
 
 describe('useFilterSettings', () => {

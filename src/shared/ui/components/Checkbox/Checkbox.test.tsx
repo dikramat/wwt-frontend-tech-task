@@ -3,17 +3,21 @@ import { describe, expect, it } from 'vitest'
 
 import { Checkbox } from './Checkbox'
 
+const labels = {
+	breakfast: 'Breakfast included'
+} as const
+
 describe('Checkbox', () => {
 	it('associates the visible label with its native input', () => {
 		render(
 			<Checkbox
 				id="breakfast"
-				label="Breakfast included"
+				label={labels.breakfast}
 			/>
 		)
 
 		const checkbox = screen.getByRole('checkbox', {
-			name: 'Breakfast included'
+			name: labels.breakfast
 		})
 
 		expect(checkbox).toHaveAttribute('id', 'breakfast')
@@ -23,12 +27,12 @@ describe('Checkbox', () => {
 		render(
 			<Checkbox
 				defaultChecked
-				label="Breakfast included"
+				label={labels.breakfast}
 			/>
 		)
 
 		const checkbox = screen.getByRole('checkbox', {
-			name: 'Breakfast included'
+			name: labels.breakfast
 		})
 
 		expect(checkbox).toBeChecked()

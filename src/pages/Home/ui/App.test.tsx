@@ -7,6 +7,14 @@ import { renderWithProviders } from '@/test/renderWithProviders'
 
 import { App } from './App'
 
+const labels = {
+	homeTitle: 'WinWinTravel frontend test task',
+	openFilters: 'Open filters',
+	filterTitle: 'Filter',
+	closePopup: 'Close popup',
+	breakfast: 'Breakfast included'
+} as const
+
 describe('Home page', () => {
 	beforeEach(() => {
 		useFilterStore.setState({ appliedFilters: [] })
@@ -16,10 +24,10 @@ describe('Home page', () => {
 		renderWithProviders(<App />)
 
 		expect(
-			screen.getByRole('heading', { name: 'WinWinTravel frontend test task' })
+			screen.getByRole('heading', { name: labels.homeTitle })
 		).toBeInTheDocument()
 		expect(
-			screen.getByRole('button', { name: 'Open filters' })
+			screen.getByRole('button', { name: labels.openFilters })
 		).toBeInTheDocument()
 		expect(screen.queryByRole('article')).not.toBeInTheDocument()
 	})
@@ -43,17 +51,19 @@ describe('Home page', () => {
 				optionsIds: ['breakfast']
 			}
 		])
-		fireEvent.click(screen.getByRole('button', { name: 'Open filters' }))
+		fireEvent.click(screen.getByRole('button', { name: labels.openFilters }))
 
 		await waitFor(() =>
 			expect(
-				screen.getByRole('checkbox', { name: 'Breakfast included' })
+				screen.getByRole('checkbox', { name: labels.breakfast })
 			).toBeChecked()
 		)
-		expect(screen.getByRole('dialog', { name: 'Filter' })).toBeInTheDocument()
-		fireEvent.click(screen.getByRole('button', { name: 'Close popup' }))
 		expect(
-			screen.queryByRole('dialog', { name: 'Filter' })
+			screen.getByRole('dialog', { name: labels.filterTitle })
+		).toBeInTheDocument()
+		fireEvent.click(screen.getByRole('button', { name: labels.closePopup }))
+		expect(
+			screen.queryByRole('dialog', { name: labels.filterTitle })
 		).not.toBeInTheDocument()
 	})
 })
